@@ -16,7 +16,6 @@ This workflow automatically updates your Python dependencies using `uv` and crea
 
 | Input | Description | Required | Default |
 |-------|-------------|:---------:|---------|
-| `token` | GitHub token for creating pull requests | ✔︎ |  |
 | `base_branch` | Branch to create PR against |  | `main` |
 | `branch` | Branch to create the PR from |  | `update-uv` |
 | `pr_title` | Title for the pull request |  | `[Deps] Update uv lockfile` |
@@ -36,9 +35,6 @@ jobs:
   update-deps:
     uses: Jordan-Kowal/github-workflows/.github/workflows/update-uv-lockfile.yml@main
     with:
-      # Required
-      token: ${{ secrets.GITHUB_TOKEN }}
-      # Optional
       base_branch: main
       branch: deps/update-uv-lockfile
       pr_title: '[Deps] Update uv lockfile'

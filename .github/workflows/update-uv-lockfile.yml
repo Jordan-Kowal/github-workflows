@@ -3,11 +3,6 @@ name: Update uv lockfile
 on:
   workflow_call:
     inputs:
-      # Required
-      token:
-        description: 'GitHub token for creating pull requests'
-        required: true
-        type: string
       # Optional
       base_branch:
         description: 'Branch to create PR against'
@@ -29,7 +24,6 @@ on:
         required: false
         type: string
         default: '.'
-
 
 permissions:
   contents: write
@@ -53,7 +47,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ inputs.token }}
+          token: ${{ github.token }}
           commit-message: ${{ inputs.pr_title }}
           title: ${{ inputs.pr_title }}
           body-path: ${{ inputs.working_directory }}/uv_output.md
