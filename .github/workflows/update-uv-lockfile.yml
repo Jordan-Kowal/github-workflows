@@ -53,7 +53,7 @@ jobs:
             echo "|---------|---------|" >> uv_output.md
             grep "Added" uv_raw_output.txt | sed 's/Added \([^ ]*\) v\(.*\)/| \1 | \2 |/' >> uv_output.md
           else
-            echo "| N/A | N/A |" >> uv_output.md
+            echo "N/A" >> uv_output.md
           fi
           echo "" >> uv_output.md
 
@@ -65,7 +65,7 @@ jobs:
             echo "|---------|------|----|" >> uv_output.md
             grep "Updated" uv_raw_output.txt | sed 's/Updated \([^ ]*\) v\([^ ]*\) -> v\(.*\)/| \1 | \2 | \3 |/' >> uv_output.md
           else
-            echo "| N/A | N/A | N/A |" >> uv_output.md
+            echo "N/A" >> uv_output.md
           fi
 
       - name: Create pull request
