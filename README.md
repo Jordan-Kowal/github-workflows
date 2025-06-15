@@ -3,7 +3,6 @@
 - [✨ GitHub Workflows ✨](#-github-workflows-)
   - [⚡ Available Workflows](#-available-workflows)
     - [🤖 Update UV Lockfile](#-update-uv-lockfile)
-      - [Requirements](#requirements)
       - [Inputs](#inputs)
       - [Example](#example)
 
@@ -13,19 +12,15 @@
 
 This workflow automatically updates your Python dependencies using `uv` and creates a pull request with the changes.
 
-#### Requirements
-
-- Python project that uses `uv` as a project manager
-- A `GITHUB_TOKEN` secret in the project secret variables
-
 #### Inputs
 
 | Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `base_branch` | Branch to create PR against | No | `main` |
-| `branch` | Branch to create the PR from | No | `update-uv` |
-| `pr_title` | Title for the pull request | No | `[Deps] Update uv lockfile` |
-| `working_directory` | Directory containing the Python project | No | `.` |
+|-------|-------------|:---------:|---------|
+| `token` | GitHub token for creating pull requests | ✔︎ |  |
+| `base_branch` | Branch to create PR against |  | `main` |
+| `branch` | Branch to create the PR from |  | `update-uv` |
+| `pr_title` | Title for the pull request |  | `[Deps] Update uv lockfile` |
+| `working_directory` | Directory containing the Python project |  | `.` |
 
 #### Example
 
@@ -39,11 +34,13 @@ on:
 
 jobs:
   update-deps:
-    uses: ./.github/workflows/update-uv-lockfile.yml
-    # Optional parameters
+    uses: Jordan-Kowal/github-workflows/.github/workflows/update-uv-lockfile.yml@main
     with:
+      # Required
+      token: ${{ secrets.GITHUB_TOKEN }}
+      # Optional
       base_branch: main
-      branch: update-deps
+      branch: deps/update-uv-lockfile
       pr_title: '[Deps] Update uv lockfile'
       working_directory: .
 ```
