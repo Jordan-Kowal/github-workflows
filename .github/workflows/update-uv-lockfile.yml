@@ -40,9 +40,36 @@ jobs:
       - name: Update uv lockfile
         working-directory: ${{ inputs.working_directory }}
         run: |
-          echo "\`\`\`" > uv_output.md
-          uv lock --upgrade 2>&1 | tee -a uv_output.md
-          echo "\`\`\`" >> uv_output.md
+          echo "# Dependencies Update" > uv_output.md
+          echo "" >> uv_output.md
+
+          # Run uv lock and capture output
+          uv lock --upgrade 2>&1 | tee uv_raw_output.txt
+
+          # Process the output
+          echo "## Added Packages" >> uv_output.md
+          echo "" >> uv_output.md
+
+          # Added Packages
+          if grep -q "Added" uv_raw_output.txt; then
+            echo "| Package | Version |" >> uv_output.md
+            echo "|---------|---------|" >> uv_output.md
+            grep "Added" uv_raw_output.txt | sed 's/Added \([^ ]*\) v\(.*\)/| \1 | \2 |/' >> uv_output.md
+          else
+            echo "| N/A | N/A |" >> uv_output.md
+          fi
+          echo "" >> uv_output.md
+
+          # Updated Packages
+          echo "## Updated Packages" >> uv_output.md
+          echo "" >> uv_output.md
+          if grep -q "Updated" uv_raw_output.txt; then
+            echo "| Package | From | To |" >> uv_output.md
+            echo "|---------|------|----|" >> uv_output.md
+            grep "Updated" uv_raw_output.txt | sed 's/Updated \([^ ]*\) v\([^ ]*\) -> v\(.*\)/| \1 | \2 | \3 |/' >> uv_output.md
+          else
+            echo "| N/A | N/A | N/A |" >> uv_output.md
+          fi
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
