@@ -1,0 +1,56 @@
+name: Update uv lockfile
+
+on:
+  workflow_call:
+    inputs:
+      base_branch:
+        description: 'Branch to create PR against'
+        required: false
+        type: string
+        default: 'main'
+      branch:
+        description: 'Branch to create the PR from'
+        required: false
+        type: string
+        default: 'deps/update-uv-lockfile'
+      pr_title:
+        description: 'Title for the pull request'
+        required: false
+        type: string
+        default: '[Deps] Update uv lockfile'
+      working_directory:
+        description: 'Directory containing the Python project (e.g., ./backend)'
+        required: false
+        type: string
+        default: '.'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v3
+
+      - name: Update uv lockfile
+        working-directory: ${{ inputs.working_directory }}
+        run: |
+          echo "\`\`\`" > uv_output.md
+          uv lock --upgrade 2>&1 | tee -a uv_output.md
+          echo "\`\`\`" >> uv_output.md
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ${{ inputs.pr_title }}
+          title: ${{ inputs.pr_title }}
+          body-path: ${{ inputs.working_directory }}/uv_output.md
+          branch: ${{ inputs.branch }}
+          base: ${{ inputs.base_branch }}
+          delete-branch: true
+          add-paths: ${{ inputs.working_directory }}/uv.lock
