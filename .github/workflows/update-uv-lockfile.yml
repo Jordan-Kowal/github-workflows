@@ -40,14 +40,11 @@ jobs:
       - name: Update uv lockfile
         working-directory: ${{ inputs.working_directory }}
         run: |
-          echo "# Dependencies Update" > uv_output.md
-          echo "" >> uv_output.md
-
           # Run uv lock and capture output
           uv lock --upgrade 2>&1 | tee uv_raw_output.txt
 
           # Process the output
-          echo "## Added Packages" >> uv_output.md
+          echo "## Added Packages" > uv_output.md
           echo "" >> uv_output.md
 
           # Added Packages
