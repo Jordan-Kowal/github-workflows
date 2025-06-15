@@ -1,10 +1,18 @@
 # ✨ GitHub Workflows ✨
 
 - [✨ GitHub Workflows ✨](#-github-workflows-)
+  - [⚠️ Requirements](#️-requirements)
   - [⚡ Available Workflows](#-available-workflows)
     - [🤖 Update UV Lockfile](#-update-uv-lockfile)
       - [Inputs](#inputs)
       - [Example](#example)
+
+## ⚠️ Requirements
+
+Some GitHub actions may use `{{ github.token }}` to authenticate and might require write access to the repository.
+Make sure your repository has the following permissions in your repository settings:
+
+<img src="./assets/permissions.png" alt="GitHub Actions Permissions" height="300" />
 
 ## ⚡ Available Workflows
 
