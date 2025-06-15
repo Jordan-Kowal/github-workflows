@@ -30,7 +30,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  lock:
+  update-uv-lockfile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
